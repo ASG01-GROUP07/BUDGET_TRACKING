@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag & Drop Shopping</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: #f4faff;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: "Montserrat", sans-serif;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #555;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #034078;
+            padding: 15px 20px;
+            color: white;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00c8ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 10%;
+            background: white;
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+        /*reference*/
+        /*MDN contributors. “@Keyframes.” MDN Web Docs, developer.mozilla.org/en-US/docs/Web/CSS/@keyframes.*/
+        @keyframes fadeIn {
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-text {
+            max-width: 500px;
+        }
+
+        .cta-button {
+            background: #0288d1;
+            color: white;
+            padding: 14px 22px;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1);
+        }
+
+        .hero-image {
+            max-width: 400px;
+        }
+
+        /* Features Section */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            padding: 50px 10%;
+            background: #e3f2fd;
+        }
+
+        .feature {
+            width: 30%;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 1s ease-in-out forwards 0.5s;
+        }
+
+        .feature img {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+
+        /* Budget Categories */
+        .budget-section {
+            padding: 60px 10%;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 1s ease-in-out forwards 1s;
+        }
+        /*reference*/
+        /*MDN contributors. “@Keyframes.” MDN Web Docs, developer.mozilla.org/en-US/docs/Web/CSS/@keyframes.*/
+
+        @keyframes slideUp {
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .budget-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .budget-grid {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .budget-section {
+            padding: 60px 10%;
+            text-align: center;
+        }
+
+        .budget-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .budget-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            align-items: stretch; /* Ensure equal height */
+        }
+
+        .budget-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 250px; /* Ensuring all cards have the same width */
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .budget-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .budget-card img {
+            width: 90px;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Fix */
+        @media (max-width: 768px) {
+            .budget-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background: #034078;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 1rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">ᯓ★Budget Track</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Features</a>
+            <a href="#">Login</a>
+            <a href="#">Sign Up</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-text">
+            <h1>Take Control of Your Shopping Budget</h1>
+            <p>Track your expenses, set spending limits, and save more effortlessly.</p>
+            <a href="#" class="cta-button">Start Tracking Now</a>
+        </div>
+        <img class="hero-image" src="https://cdn-icons-png.flaticon.com/512/3037/3037156.png" alt="Budget Tracking">
+    </div>
+
+    <!-- Features -->
+    <div class="features">
+        <div class="feature">
+            <img src="https://cdn-icons-png.flaticon.com/128/1041/1041916.png" alt="Alerts">
+            <h3>Budget Alerts</h3>
+            <p>Get notified when you're overspending.</p>
+        </div>
+        <div class="feature">
+            <img src="https://cdn-icons-png.flaticon.com/128/1256/1256650.png" alt="Categories">
+            <h3>Expense Categories</h3>
+            <p>Organize and analyze where your money goes.</p>
+        </div>
+        <div class="feature">
+            <img src="https://cdn-icons-png.flaticon.com/128/833/833314.png" alt="Savings">
+            <h3>Savings Insights</h3>
+            <p>Find smart ways to save money.</p>
+        </div> 
+    </div>
+
+    <!-- Budget Categories -->
+    <div class="budget-section">
+        <h2 class="budget-title">Your Budget Overview</h2>
+        <div class="budget-grid">
+            <div class="budget-card">
+                <img src="https://i.pinimg.com/736x/3e/fb/25/3efb25d1f2c7972a50950d890afd64a2.jpg" alt="Food">
+                <h3>Food & Groceries</h3>
+                <p>$250 spent</p>
+            </div>
+            <div class="budget-card">
+                <img src="https://i.pinimg.com/736x/42/b3/2a/42b32a8ed08ffc3a93a66b8e27b0f2c7.jpg" alt="Clothes">
+                <h3>Clothing</h3>
+                <p>$120 spent</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        © 2025 BudgetTrack. All Rights Reserved.
+    </div>
+    <style>
+        /* General styles for the page */
+        body {
+            font-family: "Montserrat", sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            color: #333;
+        }
+        /* Navbar styling */
+        .navbar {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        /* Logo style */
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: "Montserrat" , serif;
+        }
+        /* Navigation links */
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links li {
+            display: inline;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #f1c40f;
+        }
+        /* Layout containers */
+        .container-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px;
+        }
+        .container {
+            width: 60%;
+            border-radius: 12px;
+            background: #d7ebf2;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        /* Shop items */
+        .shopitem {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            background: white;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .shopitem:hover {
+            transform: scale(1.05);
+        }
+        .shopitem img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        /* Price styling */
+        .price {
+            font-size: 18px;
+            color: #e74c3c;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        /* add to cart button */
+        .add-to-cart {
+            background: #a0d9b8;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        .add-to-cart:hover {
+            background: #2ecc71;
+        }
+        /* Cart styling */
+        .cart {
+            border: 2px dashed #27ae60;
+            min-height: 250px;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        /* Search bar */
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        /* Grid layout for shop and cart items */
+        .shop-container, .cart-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar section -->
+    <div class="navbar">
+        <div class="logo">ᯓ★Budget Track</div>
+        <ul class="nav-links">
+            <li><a href="#store">Shop</a></li>
+            <li><a href="#cart">Cart</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+    <!-- Main content wrapper -->
+    <div class="container-wrapper">
+        <!-- Store container -->
+        <div class="container">
+            <h2>Browse and shop ── ᵎᵎ ✦</h2>
+            <input type="text" class="search-bar" placeholder="⌕ Search for items..." id="search">
+            <div class="shop-container" id="store"></div>
+            <!-- each shop items to be displayed -->
+            <div class="shop-container" id="store">
+                <div class="shopitem" draggable="true" id="item1">
+                    <img src="https://i.pinimg.com/236x/46/70/aa/4670aafbda494c4df410bfc60de78a46.jpg">
+                    <p>Hello Kitty T-Shirt</p>
+                    <div class="price">$20</div>
+                    <button class="add-to-cart">Add to Cart 𖹭.ᐟ</button>
+                </div>
+                <div class="shopitem" draggable="true" id="item2">
+                    <img src="https://i.pinimg.com/736x/78/b8/95/78b895cd54163108e4f9f675bbfeada6.jpg">
+                    <p>New Balance 530</p>
+                    <div class="price">$128</div>
+                    <button class="add-to-cart">Add to Cart 𖹭.ᐟ</button>
+                </div>
+                <div class="shopitem" draggable="true" id="item3">
+                    <img src="https://i.pinimg.com/736x/87/99/e7/8799e7e9ebcaf74c706239fa47a87d4d.jpg">
+                    <p>Sony WH-CH510 Wireless On-ear Headphones - Black</p>
+                    <div class="price">$99</div>
+                    <button class="add-to-cart">Add to Cart 𖹭.ᐟ</button>
+                </div>
+                <div class="shopitem" draggable="true" id="item4">
+                    <img src="https://i.pinimg.com/736x/79/d9/41/79d94123c2fa4eaa96f29d8cd010ff65.jpg">
+                    <p>Casio G-Shock DW5600SC-4</p>
+                    <div class="price">$30</div>
+                    <button class="add-to-cart">Add to Cart 𖹭.ᐟ</button>
+                </div>
+                <div class="shopitem" draggable="true" id="item5">
+                    <img src="https://i.pinimg.com/736x/47/eb/c7/47ebc7e04d460761e2ada3538c421713.jpg">
+                    <p>SEVENTEEN - ATTACCA (9th Mini Album) - 3 Ver. (Set)</p>
+                    <div class="price">$37</div>
+                    <button class="add-to-cart">Add to Cart 𖹭.ᐟ</button>
+                </div>
+                <div class="shopitem" draggable="true" id="item6">
+                    <img src="https://i.pinimg.com/736x/fc/d8/9d/fcd89d627638056a4a6f5630f90e8aa6.jpg">
+                    <p>starry night bracelet</p>
+                    <div class="price">$4.50</div>
+                    <button class="add-to-cart">Add to Cart 𖹭.ᐟ</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Shopping cart container -->
+        <div class="cart container" id="cart">
+            <h2>🛍Shopping Cart</h2>
+        </div>
+    </div>
+    
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let cart = document.getElementById("cart");
+            let stores = document.querySelectorAll(".shop-container"); // Select all shop containers
+            let selected = null;
+
+            // Function to enable drag events on items
+            function makeDraggable(item) {
+                item.setAttribute("draggable", "true");
+                item.addEventListener("dragstart", function (e) {
+                    selected = e.target;
+                });
+            }
+
+            // Apply to initial shop items
+            document.querySelectorAll(".shopitem").forEach(makeDraggable);
+
+            // Allow dropping into the cart
+            cart.addEventListener("dragover", function (e) {
+                e.preventDefault();
+            });
+
+            cart.addEventListener("drop", function (e) {
+                e.preventDefault();
+                if (selected && selected.classList.contains("shopitem")) {
+                    cart.appendChild(selected);
+                    makeDraggable(selected); // Ensure the item remains draggable
+                    selected = null;
+                }
+            });
+
+            // Allow dropping back into any shop container
+            stores.forEach((store) => {
+                store.addEventListener("dragover", function (e) {
+                    e.preventDefault();
+                });
+
+                store.addEventListener("drop", function (e) {
+                    e.preventDefault();
+                    if (selected && selected.classList.contains("shopitem")) {
+                        store.appendChild(selected);
+                        makeDraggable(selected); // Ensure the item remains draggable
+                        selected = null;
+                    }
+                });
+            });
+        });
+
+    </script>
+    <style>
+        
+         body {
+
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            padding: 20px;
+            }
+            #map {
+                height: 400px;
+                width: 80%;
+                margin: 20px auto;
+                border-radius: 15px;
+            }
+            button {
+                background: #ff7eb3;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            button:hover {
+                background: #ff5277;
+            }
+        </style>
+
+        <h1>☁︎ Automatic Currency Display ☁︎</h1>
+        <button onclick="getLocation()">Detect Location</button>
+        <p id="location"></p>
+        <p id="currency"></p>
+        <div id="map"></div>
+        
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            margin: 20px auto;
+        }
+        button {
+            background-color: #ff6680;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <p id="currency"></p>
+    
+    <div id="map"></div>
+
+    <script>
+        let map;
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("location").innerText = "Geolocation is not supported.";
+            }
+        }
+
+        function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            document.getElementById("location").innerHTML = `Latitude: ${lat}, Longitude: ${lon}`;
+
+            if (!map) {
+                map = L.map('map').setView([lat, lon], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+            }
+
+            L.marker([lat, lon]).addTo(map).bindPopup("You are here!").openPopup();
+
+            // Force map to refresh after loading
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 500);
+
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+            .then(response => response.json())
+            .then(data => {
+                const country = data.address?.country || "Unknown";
+                document.getElementById("location").innerHTML += `<br>Country: ${country}`;
+                getCurrency(country);
+            })
+            .catch(error => console.error('Error fetching location:', error));
+        }
+
+        function getCurrency(country) {
+            fetch("https://restcountries.com/v3.1/all")
+            .then(response => response.json())
+            .then(data => {
+                const countryData = data.find(c => c.name.common === country || c.altSpellings.includes(country));
+                if (countryData && countryData.currencies) {
+                    const currencyCode = Object.keys(countryData.currencies)[0];
+                    document.getElementById("currency").innerHTML = `Currency: ${currencyCode}`;
+                } else {
+                    document.getElementById("currency").innerText = "Currency not found.";
+                }
+            })
+            .catch(error => console.error('Error fetching currency:', error));
+        }
+
+        function showError(error) {
+            document.getElementById("location").innerText = "Error fetching location.";
+        }
+    </script>
+    <style type="text/css">/* Main card */
+        .update-card {
+            width: 320px;
+            padding: 15px;
+            background-color: #E3E3E3;
+            border-radius: 15px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            position: fixed; /* Fixed position to keep it in view */
+            top: 20px; /* Distance from the top */
+            right: 20px; /* Distance from the right */
+            z-index: 100; /* To keep it above other elements */
+        }
+
+        /* Title */
+        .update-card h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* Updates box */
+        #updatesBox {
+            background-color: darkgray;
+            color: white;
+            padding: 10px;
+            min-height: 50px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Budget alert */
+        #budgetAlert {
+            background-color: #FF4C4C;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .alert-text {
+            font-weight: bold;
+        }
+
+        /* Spending breakdown */
+        #spendingBreakdown {
+            background-color: #F8F8F8;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        #spendingList {
+            list-style-type: none;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        /* Button */
+        #startUpdates {
+            background-color: #2C6E49;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 90%;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        #startUpdates:hover {
+            background-color: #1F5035;
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none;
+        }
+        </style>
+            <title></title>
+        </head>
+        <body>
+            <div class="update-card">
+            <h3>Smart Budgeting: <br> Spend Wisely, Save Smartly</h3>
+            
+            <div id="updatesBox">
+                <p class="waiting">Tracking your expenses...</p>
+            </div>
+
+            <div id="budgetAlert" class="hidden">
+                <p class="alert-text">⚠ Warning: Budget Exceeded!</p>
+            </div>
+
+            <div id="spendingBreakdown">
+                <p><strong>Spending Breakdown:</strong></p>
+                <ul id="spendingList"></ul>
+            </div>
+
+            <button id="startUpdates">Start Budget Updates</button>
+        </div>
+        <script type="text/javascript">
+        document.getElementById("startUpdates").addEventListener("click", function() {
+            console.log("SSE connection started...");
+
+            const eventSource = new EventSource("https://lms.pb.edu.bn/wy2301/sse.php");
+
+            eventSource.onmessage = function(event) {
+                console.log("Received message:", event.data); // Debugging: Log all messages
+
+                if (event.data.includes("#GROUP07")) {
+                    console.log("Group07 message detected!"); // Debugging log
+                    
+                    let updatesBox = document.getElementById("updatesBox");
+                    updatesBox.innerHTML = `<p>${event.data.replace("#GROUP07", "")}</p>`;
+
+                }
+            };
+
+            eventSource.onerror = function() {
+                console.log("SSE error! Check server or connection.");
+            };
+        });
+        </script>
+
+
+ 
+    <!-- reference  -->
+    <!-- MDN contributors. “HTML Drag and Drop API - Web APIs | MDN.” Developer.mozilla.org, developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API. -->
+
+</body>
+</html>
